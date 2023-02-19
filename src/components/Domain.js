@@ -1,32 +1,34 @@
-import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 const Domain = ({ domain, ethDaddy, provider, id }) => {
-  const [owner, setOwner] = useState(null)
-  const [hasSold, setHasSold] = useState(false)
+  const [owner, setOwner] = useState(null);
+  const [hasSold, setHasSold] = useState(false);
 
   const getOwner = async () => {
     if (domain.isOwned || hasSold) {
-      const owner = await ethDaddy.ownerOf(id)
-      setOwner(owner)
+      const owner = await ethDaddy.ownerOf(id);
+      setOwner(owner);
     }
-  }
+  };
 
   const buyHandler = async () => {
-    const signer = await provider.getSigner()
-    const transaction = await ethDaddy.connect(signer).mint(id, { value: domain.cost })
-    await transaction.wait()
+    const signer = await provider.getSigner();
+    const transaction = await ethDaddy
+      .connect(signer)
+      .mint(id, { value: domain.cost });
+    await transaction.wait();
 
-    setHasSold(true)
-  }
+    setHasSold(true);
+  };
 
   useEffect(() => {
-    getOwner()
-  }, [hasSold])
+    getOwner();
+  }, [hasSold]);
 
   return (
-    <div className='card'>
-      <div className='card__info'>
+    <div className="card">
+      <div className="card__info">
         <h3>
           {domain.isOwned || owner ? (
             <del>{domain.name}</del>
@@ -39,16 +41,17 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
           {domain.isOwned || owner ? (
             <>
               <small>
-                Owned by:<br />
+                Owned by:
+                <br />
                 <span>
-                  {owner && owner.slice(0, 6) + '...' + owner.slice(38, 42)}
+                  {owner && owner.slice(0, 6) + "..." + owner.slice(38, 42)}
                 </span>
               </small>
             </>
           ) : (
             <>
               <strong>
-                {ethers.utils.formatUnits(domain.cost.toString(), 'ether')}
+                {ethers.utils.formatUnits(domain.cost.toString(), "ether")}
               </strong>
               ETH
             </>
@@ -59,7 +62,7 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
       {!domain.isOwned && !owner && (
         <button
           type="button"
-          className='card__button'
+          className="card__button"
           onClick={() => buyHandler()}
         >
           Buy It
@@ -67,6 +70,6 @@ const Domain = ({ domain, ethDaddy, provider, id }) => {
       )}
     </div>
   );
-}
+};
 
 export default Domain;
