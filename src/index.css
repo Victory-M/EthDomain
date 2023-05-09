@@ -267,11 +267,21 @@ header {
 }
 
 @media screen and (max-width: 768px) {
+  nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+  }
+
   .nav__brand {
-    padding: 30px 50px;
+    padding: 10px 20px;
   }
 
   .nav__connect {
-    margin: 0 50px 0 auto;
+    width: 109px;
+    height: 50px;
+    margin: 0 0px;
+    border-radius: 1.5rem;
+    font-size: 1.25em;
   }
 }
